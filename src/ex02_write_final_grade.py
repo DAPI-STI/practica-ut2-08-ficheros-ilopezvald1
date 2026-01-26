@@ -14,6 +14,8 @@ from pathlib import Path
 
 
 def write_final_grade(path: str | Path, name: str, average: float) -> None:
+    with open(path, "w", encoding="utf-8"):
+        
     """
     Añade una línea al fichero CSV en `path` con este formato:
 

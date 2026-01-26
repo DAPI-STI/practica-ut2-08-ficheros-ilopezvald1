@@ -17,6 +17,18 @@ import string
 
 
 def count_word_in_file(path: str | Path, word: str) -> int:
+    with open(path, "r", encoding="utf-8") as file:
+        lineas=file.readlines()
+    contador=0
+    if not word or word.isspace():
+        raise ValueError("la palabra no puede estar vacia")
+    target = word.lower().strip()
+    tabla = str.maketrans(string.punctuation, " " * len(string.punctuation))
+    for linea in lineas:
+        linea_limpia = linea.lower().translate(tabla)
+        palabras = linea_limpia.split()
+        contador += palabras.count(target)
+    return contador
     """
     Devuelve el número de apariciones de `word` dentro del fichero de texto `path`.
 
