@@ -14,7 +14,14 @@ from pathlib import Path
 
 
 def write_final_grade(path: str | Path, name: str, average: float) -> None:
-    with open(path, "w", encoding="utf-8"):
+    clean_name = name.strip()
+    if not name.strip():
+        raise ValueError("El nombre no puede estar vacío.")
+    if not (0 <= average <= 10):
+        raise ValueError("La nota debe estar entre 0 y 10.")
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(f"{name.strip()},{average}\n")
+
         
     """
     Añade una línea al fichero CSV en `path` con este formato:
@@ -33,4 +40,4 @@ def write_final_grade(path: str | Path, name: str, average: float) -> None:
     Nota:
     - No hace falta escribir cabecera para este ejercicio.
     """
-    raise NotImplementedError("Implementa write_final_grade(path, name, average)")
+    
