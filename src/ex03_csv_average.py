@@ -14,8 +14,31 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import csv
 
 def csv_average(path: str | Path, column: str) -> float:
+    path_obj = Path(path)
+    if not path_obj.exists():
+        raise FileNotFoundError(f"El fichero no existe: {path}")
+    with open(path_obj, mode="r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        if reader.fieldnames is None or column not in reader.fieldnames:
+            raise ValueError(f"La columna '{column}' no existe.")
+        total = 0.0
+        count = 0
+        for row in reader:
+            try:
+                total += float(row[column])
+                count += 1
+            except (ValueError, TypeError):
+                raise ValueError(f"Dato no numérico en la columna '{column}'.")
+        if count == 0:
+            raise ValueError("El CSV no tiene filas de datos.")
+        return total / count
+    
+   
+                
+
     """
     Calcula y devuelve la media de la columna numérica `column` en el CSV `path`.
 
@@ -33,4 +56,4 @@ def csv_average(path: str | Path, column: str) -> float:
 
     csv_average(..., "average") -> 8.0
     """
-    raise NotImplementedError("Implementa csv_average(path, column)")
+    
